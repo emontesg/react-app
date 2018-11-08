@@ -1,7 +1,16 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import "babel-polyfill";
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
+import "./styles/app.css";
+import { AuthProvider } from "./context/auth-context";
+import App from "./App";
 
-ReactDOM.render(<App/>, document.querySelector('.chamba'));
+ReactDOM.render(
+  <AuthProvider>
+    <Router>
+      <App />
+    </Router>
+  </AuthProvider>,
+  document.getElementById("root")
+);

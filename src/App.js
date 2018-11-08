@@ -1,28 +1,43 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link, IndexRoute, Switch, Redirect } from "react-router-dom";
-import Home from './routes/home';
-import Login from './routes/login';
-import Registrar from './routes/register';
+import React from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 
- 
-class App extends Component {
-  constructor(props){
-    super(props);   
-  }
-  render(){
-    return (
-        <Router>
-        <div className="container-fluid">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/registrar" component={Registrar} />
-            <Redirect to="/" />
-          </Switch>
-        </div>
-        </Router>
-    );
-  }
+import { useAuth } from "./context/auth-context";
+import Home from "./routes/home";
+import SignUp from "./routes/sign-up";
+import Login from "./routes/login";
+import Jobs from "./routes/jobs";
+
+export default function App() {
+  const { isLoggedIn } = useAuth();
+
+  return (
+    <div className="container-fluid">
+      {isLoggedIn ? (
+        <Switch>
+          <Route exact path="/" component={Jobs} />
+          <Redirect to="/" />
+        </Switch>
+      ) : (
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/sign-up" component={SignUp} />
+          <Route path="/login" component={Login} />
+          <Redirect to="/" />
+        </Switch>
+      )}
+    </div>
+  );
 }
-export default App;
+
+// function PrivateRoute({ component: Component, ...props }) {
+//   const { isLoggedIn } = useAuth();
+
+//   return (
+//     <Route
+//       render={props =>
+//         !isLoggedIn ? <Redirect to="/" /> : <Component {...props} />
+//       }
+//       {...props}
+//     />
+//   );
+// }
